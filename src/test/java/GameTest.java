@@ -12,24 +12,6 @@ public class GameTest {
         assertEquals(0, game.usedFieldsSize());
     }
 
-    @Test(expected = Exception.class)
-    public void PlayerCanBetZero() throws Exception {
-        Game game = new Game();
-        Player player = new Player();
-
-        game.start();
-        player.bet(-1);
-    }
-
-    @Test(expected = Exception.class)
-    public void PlayerCanBetOne() throws Exception {
-        Game game = new Game();
-        Player player = new Player();
-
-        game.start();
-        player.bet(2);
-    }
-
     @Test
     public void WhenGame_HasFieldThreeByThree() {
         Game game = new Game();
@@ -38,5 +20,38 @@ public class GameTest {
         assertEquals(3, game.getField()[0].length);
         assertEquals(3, game.getField()[1].length);
         assertEquals(3, game.getField()[2].length);
+    }
+
+    @Test(expected = Exception.class)
+    public void PlayerCanBetZero() throws Exception {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game.getField(), -1);
+
+        assertEquals(0, game.usedFieldsSize());
+    }
+
+    @Test(expected = Exception.class)
+    public void PlayerCanBetOne() throws Exception {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game.getField(), 2);
+
+        assertEquals(0, game.usedFieldsSize());
+    }
+
+    @Test
+    public void PlayerCanBetOnGameField() throws Exception {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game.getField(), 0);
+
+        assertEquals(1, game.usedFieldsSize());
     }
 }

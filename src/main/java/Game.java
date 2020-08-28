@@ -1,7 +1,7 @@
 import java.util.Collection;
 
 public class Game {
-    private static final int FIELD_SIZE = 2;
+    private static final int FIELD_SIZE = 3;
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
 
     public void start() {
