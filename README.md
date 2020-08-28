@@ -1,2 +1,2 @@
-# tictactoe
-Tic tak toe cli by TDD
+### tictactoe
+Tic tak toe game with cli by TDD

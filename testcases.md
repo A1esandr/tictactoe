@@ -1,0 +1,13 @@
+At the beginning of the game, the field must be empty
+
+The player can bet 0 or 1
+
+After each player's move, the computer makes a move
+
+If three fields horizontally have the same non-empty value - the one who made the last move wins
+
+If three fields vertically have the same non-empty value - the one who made the last move wins
+
+If three squares on the diagonal have the same non-empty value - the one who made the last move wins
+
+The game ends as soon as a win occurs or when there are no free fields
