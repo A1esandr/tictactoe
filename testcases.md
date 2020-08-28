@@ -1,5 +1,7 @@
 At the beginning of the game, the field must be empty
 
+Field for the game has 3*3 size
+
 The player can bet 0 or 1
 
 After each player's move, the computer makes a move
