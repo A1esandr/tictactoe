@@ -1,3 +1,5 @@
+import java.util.Collection;
+
 public class Game {
     private static final int FIELD_SIZE = 2;
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
@@ -20,5 +22,9 @@ public class Game {
             }
         }
         return usedFields;
+    }
+
+    public int[][] getField() {
+        return this.field;
     }
 }
