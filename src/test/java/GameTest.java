@@ -12,12 +12,25 @@ public class GameTest {
         assertEquals(0, game.usedFieldsSize());
     }
 
-    private class Game {
-        public void start() {
-        }
+    @Test
+    public void PlayerCanBetZero() {
+        Game game = new Game();
+        Player player = new Player();
 
-        public int usedFieldsSize() {
-            return 1;
-        }
+        game.start();
+        player.bet(0);
+
+        assertEquals(1, game.usedFieldsSize());
+    }
+
+    @Test
+    public void PlayerCanBetOne() {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(1);
+
+        assertEquals(1, game.usedFieldsSize());
     }
 }
