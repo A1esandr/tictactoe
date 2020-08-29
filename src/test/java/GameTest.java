@@ -22,36 +22,68 @@ public class GameTest {
         assertEquals(3, game.getField()[2].length);
     }
 
-    @Test(expected = Exception.class)
-    public void PlayerCanBetZero() throws Exception {
+    @Test(expected = GameException.class)
+    public void PlayerCanBetZero() throws GameException {
         Game game = new Game();
         Player player = new Player();
 
         game.start();
-        player.bet(game.getField(), -1);
-
-        assertEquals(0, game.usedFieldsSize());
+        player.bet(game, 0, 0, -1);
     }
 
-    @Test(expected = Exception.class)
-    public void PlayerCanBetOne() throws Exception {
+    @Test(expected = GameException.class)
+    public void PlayerCanBetOne() throws GameException {
         Game game = new Game();
         Player player = new Player();
 
         game.start();
-        player.bet(game.getField(), 2);
+        player.bet(game, 0, 0, 2);
+    }
 
-        assertEquals(0, game.usedFieldsSize());
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnFieldNotInGameNegativeSpinX() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, -1, 0, 0);
+    }
+
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnFieldNotInGameNegativeSpinY() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, -1, 0);
+    }
+
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnFieldNotInGameSpinX() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 3, 0, 0);
+    }
+
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnFieldNotInGameSpinY() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, 3, 0);
     }
 
     @Test
-    public void PlayerCanBetOnGameField() throws Exception {
+    public void WhenPlayer_BetComputerBetNext() throws GameException {
         Game game = new Game();
         Player player = new Player();
 
         game.start();
-        player.bet(game.getField(), 0);
+        player.bet(game, 0, 0, 0);
 
-        assertEquals(1, game.usedFieldsSize());
+        assertEquals(2, game.usedFieldsSize());
     }
 }
