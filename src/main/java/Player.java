@@ -10,5 +10,6 @@ public class Player {
         if(x > fieldSize || y > fieldSize) {
             throw new GameException(String.format("You can bet on fields in game only. Current max field is %s", fieldSize));
         }
+        game.bet(x, y, value);
     }
 }

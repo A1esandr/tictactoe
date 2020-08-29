@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class GameTest {
     @Test
@@ -85,5 +86,18 @@ public class GameTest {
         player.bet(game, 0, 0, 0);
 
         assertEquals(2, game.usedFieldsSize());
+    }
+
+    @Test
+    public void WhenThreeHorizontallyFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, 2, 0);
+        player.bet(game, 1, 2, 0);
+        player.bet(game, 2, 2, 0);
+
+        assertTrue(game.end());
     }
 }
