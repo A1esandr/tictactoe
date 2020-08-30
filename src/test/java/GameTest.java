@@ -88,6 +88,16 @@ public class GameTest {
         assertEquals(2, game.usedFieldsSize());
     }
 
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnDifferentTypesOfValue() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, 0, 0);
+        player.bet(game, 0, 1, 1);
+    }
+
     @Test
     public void WhenThreeHorizontallyFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
         Game game = new Game();

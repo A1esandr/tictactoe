@@ -8,6 +8,10 @@ The player can bet on fields which are present in game only
 
 After each player's move, the computer makes a move
 
+Player can bet only one type of value during the game 
+
+Player can bet on free fields only 
+
 If three fields horizontally have the same non-empty value - the one who made the last move wins
 
 If three fields vertically have the same non-empty value - the one who made the last move wins
