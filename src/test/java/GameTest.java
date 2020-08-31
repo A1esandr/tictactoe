@@ -133,4 +133,17 @@ public class GameTest {
 
         assertTrue(game.end());
     }
+
+    @Test
+    public void WhenThreeDiagonalFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, 0, 0);
+        player.bet(game, 1, 1, 0);
+        player.bet(game, 2, 2, 0);
+
+        assertTrue(game.end());
+    }
 }

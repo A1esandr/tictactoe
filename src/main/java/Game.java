@@ -65,6 +65,7 @@ public class Game {
 
     public boolean end() {
         boolean foundZero = false, foundOne = false;
+        // Find by horizontally
         for (int i = 0; i < FIELD_SIZE; i++) {
             foundZero = true;
             foundOne = true;
@@ -78,6 +79,28 @@ public class Game {
                     foundOne = false;
                 }
                 if (field[i][j] == 1) {
+                    foundZero = false;
+                }
+            }
+            if (foundZero || foundOne) {
+                gameOver = true;
+                break;
+            }
+        }
+        // Find by vertically
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            foundZero = true;
+            foundOne = true;
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                if (field[j][i] == -1) {
+                    foundZero = false;
+                    foundOne = false;
+                    break;
+                }
+                if (field[j][i] == 0) {
+                    foundOne = false;
+                }
+                if (field[j][i] == 1) {
                     foundZero = false;
                 }
             }
