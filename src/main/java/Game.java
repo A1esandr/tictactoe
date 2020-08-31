@@ -1,7 +1,9 @@
+import jdk.nashorn.internal.runtime.NumberToString;
+
 public class Game {
     private static final int FIELD_SIZE = 3;
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
-    int userChoice = 0, computerChoice = 0;
+    int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
 
     public void start() {
@@ -51,7 +53,10 @@ public class Game {
         }
     }
 
-    public void bet(int x, int y, int value) {
+    public void bet(int x, int y, int value) throws GameException {
+        if (userChoice != -1 && userChoice != value) {
+            throw new GameException(String.format("You can`t bet different type of value. Your previous choice is %d", userChoice));
+        }
         userChoice = value;
         getField()[y][x] = value;
         computerBet();

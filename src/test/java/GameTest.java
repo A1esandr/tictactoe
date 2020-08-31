@@ -110,4 +110,14 @@ public class GameTest {
 
         assertTrue(game.end());
     }
+
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnNotFreeField() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, 0, 0);
+        player.bet(game, 0, 0, 0);
+    }
 }
