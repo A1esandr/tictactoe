@@ -1,5 +1,3 @@
-import jdk.nashorn.internal.runtime.NumberToString;
-
 public class Game {
     private static final int FIELD_SIZE = 3;
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
@@ -58,6 +56,9 @@ public class Game {
             throw new GameException(String.format("You can`t bet different type of value. Your previous choice is %d", userChoice));
         }
         userChoice = value;
+        if (getField()[y][x] != -1) {
+            throw new GameException("This field is not empty!");
+        }
         getField()[y][x] = value;
         computerBet();
     }

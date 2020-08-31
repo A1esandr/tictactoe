@@ -98,6 +98,16 @@ public class GameTest {
         player.bet(game, 0, 1, 1);
     }
 
+    @Test(expected = GameException.class)
+    public void WhenPlayer_BetOnNotFreeField() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 0, 0, 0);
+        player.bet(game, 0, 0, 0);
+    }
+
     @Test
     public void WhenThreeHorizontallyFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
         Game game = new Game();
@@ -111,13 +121,16 @@ public class GameTest {
         assertTrue(game.end());
     }
 
-    @Test(expected = GameException.class)
-    public void WhenPlayer_BetOnNotFreeField() throws GameException {
+    @Test
+    public void WhenThreeVerticallyFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
         Game game = new Game();
         Player player = new Player();
 
         game.start();
         player.bet(game, 0, 0, 0);
-        player.bet(game, 0, 0, 0);
+        player.bet(game, 0, 1, 0);
+        player.bet(game, 0, 2, 0);
+
+        assertTrue(game.end());
     }
 }
