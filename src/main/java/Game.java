@@ -89,6 +89,9 @@ public class Game {
         }
         // Find by vertically
         for (int i = 0; i < FIELD_SIZE; i++) {
+            if (gameOver) {
+                break;
+            }
             foundZero = true;
             foundOne = true;
             for (int j = 0; j < FIELD_SIZE; j++) {
@@ -109,6 +112,42 @@ public class Game {
                 break;
             }
         }
+        // Find by diagonally
+        if (!gameOver){
+            gameOver = checkDiagonally(0, true);
+        }
+        if (!gameOver){
+            gameOver = checkDiagonally(FIELD_SIZE - 1, false);
+        }
+
         return gameOver;
+    }
+
+    private boolean checkDiagonally(int point, boolean forwardOrder){
+        boolean result = false;
+        boolean foundZero = true;
+        boolean foundOne = true;
+        while(point < FIELD_SIZE && point > -1) {
+            if (field[point][point] == -1) {
+                foundZero = false;
+                foundOne = false;
+                break;
+            }
+            if (field[point][point] == 0) {
+                foundOne = false;
+            }
+            if (field[point][point] == 1) {
+                foundZero = false;
+            }
+            if(forwardOrder){
+                point++;
+            } else {
+                point--;
+            }
+        }
+        if (foundZero || foundOne) {
+            result = true;
+        }
+        return result;
     }
 }

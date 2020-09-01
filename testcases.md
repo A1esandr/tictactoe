@@ -18,4 +18,8 @@ If three fields vertically have the same non-empty value - the one who made the 
 
 If three squares on the diagonal have the same non-empty value - the one who made the last move wins
 
-The game ends as soon as a win occurs or when there are no free fields
+The game ends as soon as a win occurs 
+
+The game ends as soon as there are no free fields
+
+Game changes must be visible after each bet
