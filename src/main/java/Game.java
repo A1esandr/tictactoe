@@ -3,13 +3,14 @@ public class Game {
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
     int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
+    String lastMessage = "Tic tac toe";
     private String fieldView =
             "_|_|_\n" +
             "_|_|_\n" +
             " | | \n";
 
     public String lastMessage() {
-        return "";
+        return lastMessage;
     }
 
     public void start() {

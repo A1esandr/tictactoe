@@ -185,4 +185,13 @@ public class GameTest {
 
         assertEquals("Tic tac toe", game.lastMessage());
     }
+
+    @Test
+    public void WhenGame_MustPrintWelcomeMessage() throws GameException {
+        Game game = new Game();
+
+        game.start();
+
+        assertEquals("Tic tac toe. \nWelcome to game!", game.lastMessage());
+    }
 }
