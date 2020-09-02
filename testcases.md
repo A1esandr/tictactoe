@@ -23,3 +23,11 @@ The game ends as soon as a win occurs
 The game ends as soon as there are no free fields
 
 Game changes must be visible after each bet
+
+After launch program must print name of game
+
+After launch program must print welcome message
+
+After launch player must select type of value for game
+
+If player select wrong type of value - print error and ask for new select

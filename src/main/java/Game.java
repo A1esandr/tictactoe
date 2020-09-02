@@ -3,6 +3,14 @@ public class Game {
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
     int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
+    private String fieldView =
+            "_|_|_\n" +
+            "_|_|_\n" +
+            " | | \n";
+
+    public String lastMessage() {
+        return "";
+    }
 
     public void start() {
         for (int i = 0; i < FIELD_SIZE; i++) {
@@ -41,7 +49,7 @@ public class Game {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 if (field[i][j] == -1) {
                     found = true;
-                    field[i][j] = computerChoice;
+                    updateField(j, i, computerChoice);
                     break;
                 }
             }
@@ -59,7 +67,7 @@ public class Game {
         if (getField()[y][x] != -1) {
             throw new GameException("This field is not empty!");
         }
-        getField()[y][x] = value;
+        updateField(x, y, value);
         computerBet();
     }
 
@@ -237,9 +245,31 @@ public class Game {
         return horizontalFieldExhausted && verticalFieldExhausted && diagonalLeftExhausted && diagonalRightExhausted;
     }
 
+    private void updateField(int x, int y, int value){
+        field[y][x] = value;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                int point = field[i][j];
+                if (point != -1) {
+                    sb.append(point);
+                } else if(i != FIELD_SIZE - 1) {
+                    sb.append("_");
+                } else {
+                    sb.append(" ");
+                }
+                if (j != FIELD_SIZE - 1) {
+                    sb.append("|");
+                } else {
+                    sb.append("\n");
+                }
+            }
+        }
+        fieldView = sb.toString();
+        System.out.print(fieldView);
+    }
+
     public String printField() {
-        return "|-1|-1|-1|\n" +
-                "|-1|-1|-1|\n" +
-                "|-1|-1|-1|\n";
+        return fieldView;
     }
 }

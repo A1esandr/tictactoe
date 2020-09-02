@@ -169,11 +169,20 @@ public class GameTest {
         game.start();
         player.bet(game, 1, 1, 0);
 
-        String currentFieldMap = "" +
-                "| 1| 0|-1|\n" +
-                "|-1|-1|-1|\n" +
-                "|-1|-1|-1|\n";
+        String currentFieldMap =
+                "1|_|_\n" +
+                "_|0|_\n" +
+                " | | \n";
 
         assertEquals(currentFieldMap, game.printField());
+    }
+
+    @Test
+    public void WhenGame_MustPrintName() throws GameException {
+        Game game = new Game();
+
+        game.start();
+
+        assertEquals("Tic tac toe", game.lastMessage());
     }
 }
