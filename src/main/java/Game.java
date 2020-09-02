@@ -64,8 +64,29 @@ public class Game {
     }
 
     public boolean end() {
-        boolean foundZero = false, foundOne = false;
         // Find by horizontally
+        gameOver = checkHorizontally();
+        // Find by vertically
+        if (!gameOver) {
+            gameOver = checkVertically();
+        }
+        // Find by diagonally
+        if (!gameOver){
+            gameOver = checkDiagonally(0, true);
+        }
+        if (!gameOver){
+            gameOver = checkDiagonally(FIELD_SIZE - 1, false);
+        }
+        if (!gameOver) {
+            gameOver = checkExhaustingAllFields();
+        }
+        return gameOver;
+    }
+
+    private boolean checkHorizontally() {
+        boolean result = false;
+        boolean foundZero;
+        boolean foundOne;
         for (int i = 0; i < FIELD_SIZE; i++) {
             foundZero = true;
             foundOne = true;
@@ -83,15 +104,18 @@ public class Game {
                 }
             }
             if (foundZero || foundOne) {
-                gameOver = true;
+                result = true;
                 break;
             }
         }
-        // Find by vertically
+        return result;
+    }
+
+    private boolean checkVertically() {
+        boolean result = false;
+        boolean foundZero;
+        boolean foundOne;
         for (int i = 0; i < FIELD_SIZE; i++) {
-            if (gameOver) {
-                break;
-            }
             foundZero = true;
             foundOne = true;
             for (int j = 0; j < FIELD_SIZE; j++) {
@@ -108,19 +132,11 @@ public class Game {
                 }
             }
             if (foundZero || foundOne) {
-                gameOver = true;
+                result = true;
                 break;
             }
         }
-        // Find by diagonally
-        if (!gameOver){
-            gameOver = checkDiagonally(0, true);
-        }
-        if (!gameOver){
-            gameOver = checkDiagonally(FIELD_SIZE - 1, false);
-        }
-
-        return gameOver;
+        return result;
     }
 
     private boolean checkDiagonally(int point, boolean forwardOrder){
@@ -149,5 +165,81 @@ public class Game {
             result = true;
         }
         return result;
+    }
+
+    private boolean checkExhaustingAllFields() {
+        boolean verticalFieldExhausted = false;
+        boolean horizontalFieldExhausted = false;
+        boolean diagonalLeftExhausted = false;
+        boolean diagonalRightExhausted = false;
+        boolean foundZero;
+        boolean foundOne;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            foundZero = false;
+            foundOne = false;
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                if (field[i][j] == 0) {
+                    foundZero = true;
+                }
+                if (field[i][j] == 1) {
+                    foundOne = true;
+                }
+            }
+            if (foundZero && foundOne) {
+                horizontalFieldExhausted = true;
+            } else {
+                horizontalFieldExhausted = false;
+            }
+        }
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            foundZero = false;
+            foundOne = false;
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                if (field[j][i] == 0) {
+                    foundZero = true;
+                }
+                if (field[j][i] == 1) {
+                    foundOne = true;
+                }
+            }
+            if (foundZero && foundOne) {
+                verticalFieldExhausted = true;
+            } else {
+                verticalFieldExhausted = false;
+            }
+        }
+        foundZero = false;
+        foundOne = false;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            if (field[i][i] == 0) {
+                foundZero = true;
+            }
+            if (field[i][i] == 1) {
+                foundOne = true;
+            }
+            if (foundZero && foundOne) {
+                diagonalLeftExhausted = true;
+            }
+        }
+        foundZero = false;
+        foundOne = false;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            if (field[FIELD_SIZE - i - 1][i] == 0) {
+                foundZero = true;
+            }
+            if (field[FIELD_SIZE - i - 1][i] == 1) {
+                foundOne = true;
+            }
+            if (foundZero && foundOne) {
+                diagonalRightExhausted = true;
+            }
+        }
+        return horizontalFieldExhausted && verticalFieldExhausted && diagonalLeftExhausted && diagonalRightExhausted;
+    }
+
+    public String printField() {
+        return "|-1|-1|-1|\n" +
+                "|-1|-1|-1|\n" +
+                "|-1|-1|-1|\n";
     }
 }

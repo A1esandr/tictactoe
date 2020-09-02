@@ -153,11 +153,27 @@ public class GameTest {
         Player player = new Player();
 
         game.start();
-        player.bet(game, 0, 0, 0);
-        player.bet(game, 2, 0, 0);
         player.bet(game, 1, 1, 0);
-        player.bet(game, 1, 2, 0);
+        player.bet(game, 1, 0, 0);
+        player.bet(game, 2, 1, 0);
+        player.bet(game, 0, 2, 0);
 
         assertTrue(game.end());
+    }
+
+    @Test
+    public void WhenPlayer_BetsChangesMustBeVisible() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.start();
+        player.bet(game, 1, 1, 0);
+
+        String currentFieldMap = "" +
+                "| 1| 0|-1|\n" +
+                "|-1|-1|-1|\n" +
+                "|-1|-1|-1|\n";
+
+        assertEquals(currentFieldMap, game.printField());
     }
 }
