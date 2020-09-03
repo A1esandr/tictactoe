@@ -3,7 +3,7 @@ public class Game {
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
     int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
-    String lastMessage = "Tic tac toe";
+    String lastMessage = "";
     private String fieldView =
             "_|_|_\n" +
             "_|_|_\n" +
@@ -13,12 +13,22 @@ public class Game {
         return lastMessage;
     }
 
+    public void printMessage(String message) {
+        lastMessage = message;
+        System.out.println(message);
+    }
+
     public void start() {
         for (int i = 0; i < FIELD_SIZE; i++) {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 field[i][j] = -1;
             }
         }
+        printMessage("Tic tac toe");
+    }
+
+    public void welcome(){
+        printMessage("Welcome to game!");
     }
 
     public int usedFieldsSize() {
@@ -267,10 +277,13 @@ public class Game {
             }
         }
         fieldView = sb.toString();
-        System.out.print(fieldView);
+        printMessage(fieldView);
     }
 
     public String printField() {
         return fieldView;
+    }
+
+    public void selectValue() {
     }
 }

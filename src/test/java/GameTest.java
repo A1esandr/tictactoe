@@ -191,7 +191,19 @@ public class GameTest {
         Game game = new Game();
 
         game.start();
+        game.welcome();
 
-        assertEquals("Tic tac toe. \nWelcome to game!", game.lastMessage());
+        assertEquals("Welcome to game!", game.lastMessage());
+    }
+
+    @Test
+    public void WhenGame_MustPrintSelectMessage() throws GameException {
+        Game game = new Game();
+
+        game.start();
+        game.welcome();
+        game.selectValue();
+
+        assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());
     }
 }
