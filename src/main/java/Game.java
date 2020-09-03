@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Game {
     private static final int FIELD_SIZE = 3;
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
@@ -289,6 +291,14 @@ public class Game {
         return fieldView;
     }
 
-    public void selectValue() {
+    public String getInput() {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+
+    public int selectValue() {
+        printMessage("Please select type of value for use in game: 0 or 1");
+        userChoice = Integer.parseInt(getInput());
+        return userChoice;
     }
 }

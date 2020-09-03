@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -199,8 +202,21 @@ public class GameTest {
     public void WhenGame_MustPrintSelectMessage() throws GameException {
         Game game = new Game();
 
-        game.selectValue();
+        String input = "0";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
 
-        assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());
+        assertEquals(0, game.selectValue());
+    }
+
+    @Test(expected = GameException.class)
+    public void WhenPlayer_SelectWrongTypePrintErrorAndAskForNewSelect() {
+        Game game = new Game();
+
+        String input = "123abc";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.selectValue();
     }
 }
