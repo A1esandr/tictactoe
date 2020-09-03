@@ -207,6 +207,7 @@ public class GameTest {
         System.setIn(in);
 
         assertEquals(0, game.selectValue());
+        assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());
     }
 
     @Test(expected = GameException.class)
