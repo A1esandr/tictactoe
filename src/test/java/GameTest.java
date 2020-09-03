@@ -181,7 +181,7 @@ public class GameTest {
     public void WhenGame_MustPrintName() throws GameException {
         Game game = new Game();
 
-        game.start();
+        game.init();
 
         assertEquals("Tic tac toe", game.lastMessage());
     }
@@ -190,7 +190,6 @@ public class GameTest {
     public void WhenGame_MustPrintWelcomeMessage() throws GameException {
         Game game = new Game();
 
-        game.start();
         game.welcome();
 
         assertEquals("Welcome to game!", game.lastMessage());
@@ -200,8 +199,6 @@ public class GameTest {
     public void WhenGame_MustPrintSelectMessage() throws GameException {
         Game game = new Game();
 
-        game.start();
-        game.welcome();
         game.selectValue();
 
         assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());

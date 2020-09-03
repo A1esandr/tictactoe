@@ -18,13 +18,18 @@ public class Game {
         System.out.println(message);
     }
 
-    public void start() {
+    public void init() {
         for (int i = 0; i < FIELD_SIZE; i++) {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 field[i][j] = -1;
             }
         }
         printMessage("Tic tac toe");
+    }
+
+    public void start() {
+        init();
+        welcome();
     }
 
     public void welcome(){
