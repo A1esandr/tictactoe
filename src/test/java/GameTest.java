@@ -211,7 +211,7 @@ public class GameTest {
     }
 
     @Test(expected = GameException.class)
-    public void WhenPlayer_SelectWrongTypePrintErrorAndAskForNewSelect() {
+    public void WhenPlayer_SelectWrongTypeThrowError() throws GameException {
         Game game = new Game();
 
         String input = "123abc";
@@ -219,5 +219,19 @@ public class GameTest {
         System.setIn(in);
 
         game.selectValue();
+    }
+
+    @Test
+    public void WhenPlayer_SelectWrongTypePrintErrorAndAskForNewSelect() {
+        Game game = new Game();
+
+        String input = "123abc";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.launchSelectValue(0);
+
+        assertEquals("GameException: For input string: \"123abc\"", game.previousMessage());
+        assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());
     }
 }

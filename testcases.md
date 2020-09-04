@@ -31,3 +31,9 @@ After launch program must print welcome message
 After launch player must select type of value for game
 
 If player select wrong type of value - print error and ask for new select
+
+Show the field with coordinates to user after select value
+
+Show to user welcome message for bet with short instruction about coordinates
+
+Get input for bet from user

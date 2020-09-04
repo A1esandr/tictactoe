@@ -296,9 +296,33 @@ public class Game {
         return sc.nextLine();
     }
 
-    public int selectValue() {
+    public int selectValue() throws GameException {
         printMessage("Please select type of value for use in game: 0 or 1");
-        userChoice = Integer.parseInt(getInput());
+        try {
+            userChoice = Integer.parseInt(getInput());
+        } catch (Exception e) {
+            throw new GameException(e.getMessage());
+        }
+        if (!(userChoice == 1 || userChoice == 0)) {
+            throw new GameException(String.format("Selected wrong type of value: %s", userChoice));
+        }
         return userChoice;
+    }
+
+    public void launchSelectValue(int count) {
+        count++;
+        try {
+            selectValue();
+        } catch (Exception e) {
+            printMessage(e.getMessage());
+            if (count > 10) {
+                return;
+            }
+            launchSelectValue(count);
+        }
+    }
+
+    public String previousMessage() {
+        return "";
     }
 }
