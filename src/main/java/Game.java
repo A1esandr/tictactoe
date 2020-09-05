@@ -49,7 +49,7 @@ public class Game {
         launchSelectValue(3);
         printField();
         welcomeBet();
-        launchPlayerBet();
+        launchPlayerBet(3);
     }
 
     public void welcome(){
@@ -347,12 +347,22 @@ public class Game {
         }
     }
 
-    public void launchPlayerBet() throws GameException {
-        String coordinatesInput = getInput();
-        String[] coordinates = coordinatesInput.split(" ");
-        int x = Integer.parseInt(coordinates[0]);
-        int y = Integer.parseInt(coordinates[1]);
-        player.bet(this, x, y);
+    public void launchPlayerBet(int count) throws GameException {
+        count--;
+        try {
+            String coordinatesInput = getInput();
+            String[] coordinates = coordinatesInput.split(" ");
+            int x = Integer.parseInt(coordinates[0]);
+            int y = Integer.parseInt(coordinates[1]);
+            player.bet(this, x, y);
+        } catch (Exception e) {
+            printMessage(e.getMessage());
+            if (count < 0) {
+                return;
+            }
+            welcomeBet();
+            launchPlayerBet(count);
+        }
     }
 
     public List<String> getMessageHistory() {

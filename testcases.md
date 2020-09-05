@@ -42,4 +42,14 @@ Get input for bet from user and make bet
 
 If player inputs wrong bet value - print error and ask for new input
 
+Show message about the win of user if it occurs
+
+Show message about the win of computer if it occurs
+
 Show game over message after the win occurs
+
+Show game over message after exhausted all available fields
+
+Show welcome message for new game after game over
+
+Start new game if user confirm new game after game over

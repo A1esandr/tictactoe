@@ -210,6 +210,8 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
+        game.init();
+
         assertEquals(0, game.selectValue());
         assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());
     }
@@ -233,11 +235,13 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
+        game.init();
+
         game.launchSelectValue(1);
 
-        assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(0));
-        assertEquals("For input string: \"123abc\"", game.getMessageHistory().get(1));
-        assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(2));
+        assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(1));
+        assertEquals("For input string: \"123abc\"", game.getMessageHistory().get(2));
+        assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(3));
     }
 
     @Test
@@ -258,8 +262,8 @@ public class GameTest {
                 "  0|1|2 x\n";
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Please select type of value for use in game: 0 or 1", messageHistory.get(messageHistory.size()-2));
-        assertEquals(currentFieldMap, messageHistory.get(messageHistory.size()-1));
+        assertEquals("Please select type of value for use in game: 0 or 1", messageHistory.get(2));
+        assertEquals(currentFieldMap, messageHistory.get(3));
     }
 
     @Test
@@ -331,6 +335,23 @@ public class GameTest {
                 "0 0|_|_\n" +
                 "  0|1|2 x\n";
 
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("For input string: \"abc\"", messageHistory.get(messageHistory.size()-4));
+        assertEquals("Make a bet, type x y point (for example, 1 1):", messageHistory.get(messageHistory.size()-3));
+        assertEquals(currentFieldMap, messageHistory.get(messageHistory.size()-1));
         assertEquals(currentFieldMap, game.getFieldView());
+    }
+
+    @Test
+    public void WhenGame_IsOverShowMessage() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        assertEquals("You win!", game.lastMessage());
     }
 }
