@@ -13,7 +13,7 @@ public class Player {
         game.bet(x, y, value);
     }
 
-    public void bet(Game game, int x, int y) {
-
+    public void bet(Game game, int x, int y) throws GameException {
+        bet(game, x, y, game.getUserChoice());
     }
 }

@@ -271,7 +271,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_PlayerUsedOnlySelectedValueOnBet() {
+    public void WhenGame_PlayerUsedOnlySelectedValueOnBet() throws GameException {
         Game game = new Game();
         Player player = new Player();
 
@@ -285,10 +285,30 @@ public class GameTest {
 
         String currentFieldMap =
                 "y\n" +
-                        "2 _|_|_\n" +
-                        "1 _|1|_\n" +
-                        "0 0|_|_\n" +
-                        "  0|1|2 x\n";
+                "2 _|_|_\n" +
+                "1 _|1|_\n" +
+                "0 0|_|_\n" +
+                "  0|1|2 x\n";
+
+        assertEquals(currentFieldMap, game.getFieldView());
+    }
+
+    @Test
+    public void WhenPlayer_InputsBet_GameMakesBet() {
+        Game game = new Game();
+
+        String input = "1 1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        String currentFieldMap =
+                "y\n" +
+                "2 _|_|_\n" +
+                "1 _|1|_\n" +
+                "0 0|_|_\n" +
+                "  0|1|2 x\n";
 
         assertEquals(currentFieldMap, game.getFieldView());
     }

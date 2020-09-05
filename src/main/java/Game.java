@@ -20,6 +20,10 @@ public class Game {
         return lastMessage;
     }
 
+    public int getUserChoice() {
+        return userChoice;
+    }
+
     public void printMessage(String message) {
         messageHistory.add(message);
         lastMessage = message;
@@ -69,6 +73,8 @@ public class Game {
     public void computerBet() {
         if (userChoice == 0) {
             computerChoice = 1;
+        } else {
+            computerChoice = 0;
         }
         boolean found = false;
         for (int i = 0; i < FIELD_SIZE; i++) {
