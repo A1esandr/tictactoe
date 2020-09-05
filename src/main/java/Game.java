@@ -341,5 +341,6 @@ public class Game {
     }
 
     public void welcomeBet() {
+        printMessage("Make a bet, type x y point (for example, 1 1):");
     }
 }

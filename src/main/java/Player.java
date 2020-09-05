@@ -12,4 +12,8 @@ public class Player {
         }
         game.bet(x, y, value);
     }
+
+    public void bet(Game game, int x, int y) {
+
+    }
 }

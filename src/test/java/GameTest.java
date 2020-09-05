@@ -269,4 +269,27 @@ public class GameTest {
 
         assertEquals("Make a bet, type x y point (for example, 1 1):", game.lastMessage());
     }
+
+    @Test
+    public void WhenGame_PlayerUsedOnlySelectedValueOnBet() {
+        Game game = new Game();
+        Player player = new Player();
+
+        String input = "1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        player.bet(game,1, 1);
+
+        String currentFieldMap =
+                "y\n" +
+                        "2 _|_|_\n" +
+                        "1 _|1|_\n" +
+                        "0 0|_|_\n" +
+                        "  0|1|2 x\n";
+
+        assertEquals(currentFieldMap, game.getFieldView());
+    }
 }
