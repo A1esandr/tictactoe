@@ -15,6 +15,8 @@ public class Game {
             "1 _|_|_\n" +
             "0 _|_|_\n" +
             "  0|1|2 x\n";
+    Scanner scanner;
+    Player player;
 
     public String lastMessage() {
         return lastMessage;
@@ -36,14 +38,18 @@ public class Game {
                 field[i][j] = -1;
             }
         }
+        scanner = new Scanner(System.in);
+        player = new Player();
         printMessage("Tic tac toe");
     }
 
-    public void start() {
+    public void start() throws GameException {
         init();
         welcome();
         launchSelectValue(3);
         printField();
+        welcomeBet();
+        launchPlayerBet();
     }
 
     public void welcome(){
@@ -312,8 +318,7 @@ public class Game {
     }
 
     public String getInput() {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
+        return scanner.nextLine();
     }
 
     public int selectValue() throws GameException {
@@ -340,6 +345,14 @@ public class Game {
             }
             launchSelectValue(count);
         }
+    }
+
+    public void launchPlayerBet() throws GameException {
+        String coordinatesInput = getInput();
+        String[] coordinates = coordinatesInput.split(" ");
+        int x = Integer.parseInt(coordinates[0]);
+        int y = Integer.parseInt(coordinates[1]);
+        player.bet(this, x, y);
     }
 
     public List<String> getMessageHistory() {

@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -240,7 +241,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_ShowFieldWithCoordinates() {
+    public void WhenGame_ShowFieldWithCoordinates() throws GameException {
         Game game = new Game();
 
         String input = "1";
@@ -294,10 +295,30 @@ public class GameTest {
     }
 
     @Test
-    public void WhenPlayer_InputsBet_GameMakesBet() {
+    public void WhenPlayer_InputsBet_GameMakesBet() throws GameException {
         Game game = new Game();
 
-        String input = "1 1";
+        String input = "1" + "\n1 1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        String currentFieldMap =
+                "y\n" +
+                "2 _|_|_\n" +
+                "1 _|1|_\n" +
+                "0 0|_|_\n" +
+                "  0|1|2 x\n";
+
+        assertEquals(currentFieldMap, game.getFieldView());
+    }
+
+    @Test
+    public void WhenPlayer_InputsWrongBet_PrintErrorAndAskAgain() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\nabc" + "\n1 1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

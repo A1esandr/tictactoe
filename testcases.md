@@ -40,4 +40,6 @@ Player uses only selected value for bet
 
 Get input for bet from user and make bet
 
+If player inputs wrong bet value - print error and ask for new input
+
 Show game over message after the win occurs
