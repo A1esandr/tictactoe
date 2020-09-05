@@ -2,6 +2,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +12,7 @@ public class GameTest {
     public void WhenGameStarts_EmptyField() {
         Game game = new Game();
 
-        game.start();
+        game.init();
 
         assertEquals(0, game.usedFieldsSize());
     }
@@ -31,7 +32,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, -1);
     }
 
@@ -40,7 +41,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, 2);
     }
 
@@ -49,7 +50,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, -1, 0, 0);
     }
 
@@ -58,7 +59,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, -1, 0);
     }
 
@@ -67,7 +68,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 3, 0, 0);
     }
 
@@ -76,7 +77,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 3, 0);
     }
 
@@ -85,7 +86,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, 0);
 
         assertEquals(2, game.usedFieldsSize());
@@ -96,7 +97,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, 0);
         player.bet(game, 0, 1, 1);
     }
@@ -106,7 +107,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, 0);
         player.bet(game, 0, 0, 0);
     }
@@ -116,7 +117,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 2, 0);
         player.bet(game, 1, 2, 0);
         player.bet(game, 2, 2, 0);
@@ -129,7 +130,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, 0);
         player.bet(game, 0, 1, 0);
         player.bet(game, 0, 2, 0);
@@ -142,7 +143,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 0, 0, 0);
         player.bet(game, 1, 1, 0);
         player.bet(game, 2, 2, 0);
@@ -155,7 +156,7 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 1, 1, 0);
         player.bet(game, 1, 0, 0);
         player.bet(game, 2, 1, 0);
@@ -169,15 +170,17 @@ public class GameTest {
         Game game = new Game();
         Player player = new Player();
 
-        game.start();
+        game.init();
         player.bet(game, 1, 1, 0);
 
         String currentFieldMap =
-                "1|_|_\n" +
-                "_|0|_\n" +
-                " | | \n";
+                "y\n" +
+                "2 _|_|_\n" +
+                "1 _|0|_\n" +
+                "0 1|_|_\n" +
+                "  0|1|2 x\n";
 
-        assertEquals(currentFieldMap, game.printField());
+        assertEquals(currentFieldMap, game.getFieldView());
     }
 
     @Test
@@ -229,9 +232,41 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        game.launchSelectValue(0);
+        game.launchSelectValue(1);
 
-        assertEquals("GameException: For input string: \"123abc\"", game.previousMessage());
-        assertEquals("Please select type of value for use in game: 0 or 1", game.lastMessage());
+        assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(0));
+        assertEquals("For input string: \"123abc\"", game.getMessageHistory().get(1));
+        assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(2));
+    }
+
+    @Test
+    public void WhenGame_ShowFieldWithCoordinates() {
+        Game game = new Game();
+
+        String input = "1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        String currentFieldMap =
+                "y\n" +
+                "2 _|_|_\n" +
+                "1 _|_|_\n" +
+                "0 _|_|_\n" +
+                "  0|1|2 x\n";
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Please select type of value for use in game: 0 or 1", messageHistory.get(messageHistory.size()-2));
+        assertEquals(currentFieldMap, messageHistory.get(messageHistory.size()-1));
+    }
+
+    @Test
+    public void WhenGame_ShowWelcomeBetMessage() {
+        Game game = new Game();
+
+        game.welcomeBet();
+
+        assertEquals("Make a bet, type x y point (for example, 1 1):", game.lastMessage());
     }
 }

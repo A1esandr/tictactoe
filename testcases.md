@@ -36,4 +36,6 @@ Show the field with coordinates to user after select value
 
 Show to user welcome message for bet with short instruction about coordinates
 
+Player use only selected value for bet
+
 Get input for bet from user

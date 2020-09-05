@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -6,16 +8,20 @@ public class Game {
     int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
     String lastMessage = "";
+    List<String> messageHistory = new ArrayList<>();
     private String fieldView =
-            "_|_|_\n" +
-            "_|_|_\n" +
-            " | | \n";
+            "y\n" +
+            "2 _|_|_\n" +
+            "1 _|_|_\n" +
+            "0 _|_|_\n" +
+            "  0|1|2 x\n";
 
     public String lastMessage() {
         return lastMessage;
     }
 
     public void printMessage(String message) {
+        messageHistory.add(message);
         lastMessage = message;
         System.out.println(message);
     }
@@ -32,6 +38,8 @@ public class Game {
     public void start() {
         init();
         welcome();
+        launchSelectValue(3);
+        printField();
     }
 
     public void welcome(){
@@ -266,15 +274,16 @@ public class Game {
     private void updateField(int x, int y, int value){
         field[y][x] = value;
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < FIELD_SIZE; i++) {
+        sb.append("y\n");
+        for (int i = FIELD_SIZE - 1; i > -1; i--) {
+            sb.append(i);
+            sb.append(" ");
             for (int j = 0; j < FIELD_SIZE; j++) {
                 int point = field[i][j];
                 if (point != -1) {
                     sb.append(point);
-                } else if(i != FIELD_SIZE - 1) {
-                    sb.append("_");
                 } else {
-                    sb.append(" ");
+                    sb.append("_");
                 }
                 if (j != FIELD_SIZE - 1) {
                     sb.append("|");
@@ -283,12 +292,17 @@ public class Game {
                 }
             }
         }
+        sb.append("  0|1|2 x\n");
         fieldView = sb.toString();
         printMessage(fieldView);
     }
 
-    public String printField() {
+    public String getFieldView() {
         return fieldView;
+    }
+
+    public void printField() {
+        printMessage(fieldView);
     }
 
     public String getInput() {
@@ -310,19 +324,22 @@ public class Game {
     }
 
     public void launchSelectValue(int count) {
-        count++;
+        count--;
         try {
             selectValue();
         } catch (Exception e) {
             printMessage(e.getMessage());
-            if (count > 10) {
+            if (count < 0) {
                 return;
             }
             launchSelectValue(count);
         }
     }
 
-    public String previousMessage() {
-        return "";
+    public List<String> getMessageHistory() {
+        return messageHistory;
+    }
+
+    public void welcomeBet() {
     }
 }
