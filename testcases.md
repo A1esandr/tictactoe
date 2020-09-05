@@ -48,6 +48,8 @@ Show message about the win of computer if it occurs
 
 Show game over message after the win occurs
 
+Show game over message after lose occurs
+
 Show game over message after exhausted all available fields
 
 Show welcome message for new game after game over

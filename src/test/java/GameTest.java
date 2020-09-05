@@ -140,7 +140,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenThreeDiagonalFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
+    public void WhenThreeLeftDiagonalFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
         Game game = new Game();
         Player player = new Player();
 
@@ -148,6 +148,20 @@ public class GameTest {
         player.bet(game, 0, 0, 0);
         player.bet(game, 1, 1, 0);
         player.bet(game, 2, 2, 0);
+
+        assertTrue(game.end());
+    }
+
+    @Test
+    public void WhenThreeRightDiagonalFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
+        Game game = new Game();
+        Player player = new Player();
+
+        game.init();
+
+        player.bet(game, 2, 0, 0);
+        player.bet(game, 1, 1, 0);
+        player.bet(game, 0, 2, 0);
 
         assertTrue(game.end());
     }
@@ -231,13 +245,12 @@ public class GameTest {
     public void WhenPlayer_SelectWrongTypePrintErrorAndAskForNewSelect() {
         Game game = new Game();
 
-        String input = "123abc";
+        String input = "123abc" + "\n1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
         game.init();
-
-        game.launchSelectValue(1);
+        game.launchSelectValue();
 
         assertEquals("Please select type of value for use in game: 0 or 1", game.getMessageHistory().get(1));
         assertEquals("For input string: \"123abc\"", game.getMessageHistory().get(2));
@@ -248,11 +261,8 @@ public class GameTest {
     public void WhenGame_ShowFieldWithCoordinates() throws GameException {
         Game game = new Game();
 
-        String input = "1";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        game.start();
+        game.init();
+        game.printField();
 
         String currentFieldMap =
                 "y\n" +
@@ -262,8 +272,7 @@ public class GameTest {
                 "  0|1|2 x\n";
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Please select type of value for use in game: 0 or 1", messageHistory.get(2));
-        assertEquals(currentFieldMap, messageHistory.get(3));
+        assertEquals(currentFieldMap, messageHistory.get(1));
     }
 
     @Test
@@ -284,7 +293,8 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        game.start();
+        game.init();
+        game.launchSelectValue();
 
         player.bet(game,1, 1);
 
@@ -306,7 +316,12 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        game.start();
+        game.init();
+        game.welcome();
+        game.launchSelectValue();
+        game.printField();
+        game.welcomeBet();
+        game.launchPlayerBet();
 
         String currentFieldMap =
                 "y\n" +
@@ -326,7 +341,12 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        game.start();
+        game.init();
+        game.welcome();
+        game.launchSelectValue();
+        game.printField();
+        game.welcomeBet();
+        game.launchPlayerBet();
 
         String currentFieldMap =
                 "y\n" +
@@ -343,7 +363,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_IsOverShowMessage() throws GameException {
+    public void WhenGame_IsOverAndPlayerIsWinShowMessage() throws GameException {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
@@ -353,5 +373,18 @@ public class GameTest {
         game.start();
 
         assertEquals("You win!", game.lastMessage());
+    }
+
+    @Test
+    public void WhenGame_IsOverAndPlayerIsLoseShowMessage() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        assertEquals("You lose :(", game.lastMessage());
     }
 }

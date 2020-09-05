@@ -7,6 +7,7 @@ public class Game {
     int[][] field = new int[FIELD_SIZE][FIELD_SIZE];
     int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
+    boolean playerWin = false;
     String lastMessage = "";
     List<String> messageHistory = new ArrayList<>();
     private String fieldView =
@@ -46,10 +47,19 @@ public class Game {
     public void start() throws GameException {
         init();
         welcome();
-        launchSelectValue(3);
+        launchSelectValue();
         printField();
         welcomeBet();
-        launchPlayerBet(3);
+        while (!this.end()) {
+            launchPlayerBet();
+        }
+        checkWin();
+    }
+
+    public void checkWin() {
+        if (playerWin) {
+            printMessage("You win!");
+        }
     }
 
     public void welcome(){
@@ -118,10 +128,10 @@ public class Game {
         }
         // Find by diagonally
         if (!gameOver){
-            gameOver = checkDiagonally(0, true);
+            gameOver = checkLeftDiagonally();
         }
         if (!gameOver){
-            gameOver = checkDiagonally(FIELD_SIZE - 1, false);
+            gameOver = checkRightDiagonally();
         }
         if (!gameOver) {
             gameOver = checkExhaustingAllFields();
@@ -149,8 +159,8 @@ public class Game {
                     foundZero = false;
                 }
             }
-            if (foundZero || foundOne) {
-                result = true;
+            result = checkResult(foundZero, foundOne);
+            if (result) {
                 break;
             }
         }
@@ -177,18 +187,19 @@ public class Game {
                     foundZero = false;
                 }
             }
-            if (foundZero || foundOne) {
-                result = true;
+            result = checkResult(foundZero, foundOne);
+            if (result) {
                 break;
             }
         }
         return result;
     }
 
-    private boolean checkDiagonally(int point, boolean forwardOrder){
+    private boolean checkLeftDiagonally(){
         boolean result = false;
         boolean foundZero = true;
         boolean foundOne = true;
+        int point = 0;
         while(point < FIELD_SIZE && point > -1) {
             if (field[point][point] == -1) {
                 foundZero = false;
@@ -201,16 +212,40 @@ public class Game {
             if (field[point][point] == 1) {
                 foundZero = false;
             }
-            if(forwardOrder){
-                point++;
-            } else {
-                point--;
+            point++;
+        }
+        return checkResult(foundZero, foundOne);
+    }
+
+    private boolean checkRightDiagonally(){
+        boolean foundZero = true;
+        boolean foundOne = true;
+        int point = 0;
+        while(point < FIELD_SIZE && point > -1) {
+            if (field[FIELD_SIZE - point - 1][point] == -1) {
+                foundZero = false;
+                foundOne = false;
+                break;
             }
+            if (field[FIELD_SIZE - point - 1][point] == 0) {
+                foundOne = false;
+            }
+            if (field[FIELD_SIZE - point - 1][point] == 1) {
+                foundZero = false;
+            }
+            point++;
         }
+        return checkResult(foundZero, foundOne);
+    }
+
+    private boolean checkResult(boolean foundZero, boolean foundOne) {
         if (foundZero || foundOne) {
-            result = true;
+            if (foundZero && userChoice == 0 || foundOne && userChoice == 1) {
+                playerWin = true;
+            }
+            return true;
         }
-        return result;
+        return false;
     }
 
     private boolean checkExhaustingAllFields() {
@@ -334,21 +369,16 @@ public class Game {
         return userChoice;
     }
 
-    public void launchSelectValue(int count) {
-        count--;
+    public void launchSelectValue() {
         try {
             selectValue();
         } catch (Exception e) {
             printMessage(e.getMessage());
-            if (count < 0) {
-                return;
-            }
-            launchSelectValue(count);
+            launchSelectValue();
         }
     }
 
-    public void launchPlayerBet(int count) throws GameException {
-        count--;
+    public void launchPlayerBet() throws GameException {
         try {
             String coordinatesInput = getInput();
             String[] coordinates = coordinatesInput.split(" ");
@@ -357,11 +387,8 @@ public class Game {
             player.bet(this, x, y);
         } catch (Exception e) {
             printMessage(e.getMessage());
-            if (count < 0) {
-                return;
-            }
             welcomeBet();
-            launchPlayerBet(count);
+            launchPlayerBet();
         }
     }
 
