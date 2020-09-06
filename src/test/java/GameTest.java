@@ -389,6 +389,25 @@ public class GameTest {
     }
 
     @Test
+    public void WhenGame_WelcomeUserBet_ShowMessage() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Make a bet, type x y point (for example, 1 1):",
+                messageHistory.get(messageHistory.size()-4));
+        assertEquals("Make a bet, type x y point (for example, 1 1):",
+                messageHistory.get(messageHistory.size()-7));
+        assertEquals("Make a bet, type x y point (for example, 1 1):",
+                messageHistory.get(messageHistory.size()-10));
+    }
+
+    @Test
     public void WhenGame_MakesComputerBet_ShowMessage() throws GameException {
         Game game = new Game();
 

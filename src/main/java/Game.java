@@ -49,8 +49,8 @@ public class Game {
         welcome();
         launchSelectValue();
         printField();
-        welcomeBet();
         while (!this.end()) {
+            welcomeBet();
             launchPlayerBet();
         }
         checkWin();
