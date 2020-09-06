@@ -387,4 +387,18 @@ public class GameTest {
 
         assertEquals("You lose :(", game.lastMessage());
     }
+
+    @Test
+    public void WhenGame_MakesComputerBet_ShowMessage() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Computer bets: 2 0", messageHistory.get(messageHistory.size()-3));
+    }
 }

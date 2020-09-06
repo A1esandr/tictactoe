@@ -50,6 +50,8 @@ Show game over message after the win occurs
 
 Show game over message after lose occurs
 
+Show message about bet of computer before it bets
+
 Show game over message after exhausted all available fields
 
 Show welcome message for new game after game over

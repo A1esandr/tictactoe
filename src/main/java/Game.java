@@ -59,6 +59,8 @@ public class Game {
     public void checkWin() {
         if (playerWin) {
             printMessage("You win!");
+        } else {
+            printMessage("You lose :(");
         }
     }
 
