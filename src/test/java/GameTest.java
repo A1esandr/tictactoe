@@ -356,8 +356,8 @@ public class GameTest {
                 "  0|1|2 x\n";
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("For input string: \"abc\"", messageHistory.get(messageHistory.size()-4));
-        assertEquals("Make a bet, type x y point (for example, 1 1):", messageHistory.get(messageHistory.size()-3));
+        assertEquals("For input string: \"abc\"", messageHistory.get(messageHistory.size()-5));
+        assertEquals("Make a bet, type x y point (for example, 1 1):", messageHistory.get(messageHistory.size()-4));
         assertEquals(currentFieldMap, messageHistory.get(messageHistory.size()-1));
         assertEquals(currentFieldMap, game.getFieldView());
     }
@@ -400,11 +400,11 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-4));
+                messageHistory.get(messageHistory.size()-5));
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-7));
+                messageHistory.get(messageHistory.size()-9));
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-10));
+                messageHistory.get(messageHistory.size()-13));
     }
 
     @Test
@@ -419,5 +419,18 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("Computer bets: 2 0", messageHistory.get(messageHistory.size()-3));
+    }
+
+    @Test
+    public void WhenGame_AllFieldExhausted_ShowMessage() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        assertEquals("Draw", game.lastMessage());
     }
 }

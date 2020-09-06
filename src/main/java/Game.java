@@ -99,6 +99,7 @@ public class Game {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 if (field[i][j] == -1) {
                     found = true;
+                    printMessage(String.format("Computer bets: %d %d", j, i));
                     updateField(j, i, computerChoice);
                     break;
                 }
