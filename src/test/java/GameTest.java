@@ -431,6 +431,19 @@ public class GameTest {
 
         game.start();
 
-        assertEquals("Draw", game.lastMessage());
+        assertEquals("Game over. It is a draw", game.lastMessage());
+    }
+
+    @Test
+    public void WhenGame_IsOver_AskForNewGame() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        assertEquals("Would you like to play again? (yes/no)", game.lastMessage());
     }
 }

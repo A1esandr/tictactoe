@@ -8,6 +8,7 @@ public class Game {
     int userChoice = -1, computerChoice = -1;
     boolean gameOver = false;
     boolean playerWin = false;
+    boolean computerWin = false;
     String lastMessage = "";
     List<String> messageHistory = new ArrayList<>();
     private String fieldView =
@@ -59,8 +60,10 @@ public class Game {
     public void checkWin() {
         if (playerWin) {
             printMessage("You win!");
-        } else {
+        } else if(computerWin) {
             printMessage("You lose :(");
+        } else {
+            printMessage("Game over. It is a draw");
         }
     }
 
@@ -245,6 +248,8 @@ public class Game {
         if (foundZero || foundOne) {
             if (foundZero && userChoice == 0 || foundOne && userChoice == 1) {
                 playerWin = true;
+            } else {
+                computerWin = true;
             }
             return true;
         }
