@@ -372,7 +372,8 @@ public class GameTest {
 
         game.start();
 
-        assertEquals("You win!", game.lastMessage());
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("You win!",  messageHistory.get(messageHistory.size()-2));
     }
 
     @Test
@@ -385,7 +386,8 @@ public class GameTest {
 
         game.start();
 
-        assertEquals("You lose :(", game.lastMessage());
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("You lose :(", messageHistory.get(messageHistory.size()-2));
     }
 
     @Test
@@ -400,11 +402,11 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-5));
+                messageHistory.get(messageHistory.size()-6));
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-9));
+                messageHistory.get(messageHistory.size()-10));
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-13));
+                messageHistory.get(messageHistory.size()-14));
     }
 
     @Test
@@ -418,7 +420,7 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Computer bets: 2 0", messageHistory.get(messageHistory.size()-3));
+        assertEquals("Computer bets: 2 0", messageHistory.get(messageHistory.size()-4));
     }
 
     @Test
@@ -431,7 +433,8 @@ public class GameTest {
 
         game.start();
 
-        assertEquals("Game over. It is a draw", game.lastMessage());
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Game over. It is a draw",  messageHistory.get(messageHistory.size()-2));
     }
 
     @Test
@@ -445,5 +448,18 @@ public class GameTest {
         game.start();
 
         assertEquals("Would you like to play again? (yes/no)", game.lastMessage());
+    }
+
+    @Test
+    public void WhenPlayer_ConfirmNewGameAfterGameOver_StartGame() throws GameException {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2" + "\nyes" + "\n1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        assertEquals("Welcome to game!", game.lastMessage());
     }
 }

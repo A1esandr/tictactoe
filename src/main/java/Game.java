@@ -55,6 +55,7 @@ public class Game {
             launchPlayerBet();
         }
         checkWin();
+        tryAgain();
     }
 
     public void checkWin() {
@@ -406,5 +407,9 @@ public class Game {
 
     public void welcomeBet() {
         printMessage("Make a bet, type x y point (for example, 1 1):");
+    }
+
+    public void tryAgain(){
+        printMessage("Would you like to play again? (yes/no)");
     }
 }
