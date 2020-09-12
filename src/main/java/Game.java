@@ -40,22 +40,35 @@ public class Game {
                 field[i][j] = -1;
             }
         }
-        scanner = new Scanner(System.in);
-        player = new Player();
-        printMessage("Tic tac toe");
+        if (!gameOver) {
+            scanner = new Scanner(System.in);
+            player = new Player();
+            printMessage("Tic tac toe");
+        }
     }
 
-    public void start() throws GameException {
+    public void reset() {
+        gameOver = false;
+        playerWin = false;
+        computerWin = false;
+    }
+
+    public void start() {
         init();
-        welcome();
-        launchSelectValue();
-        printField();
+        if (!gameOver) {
+            welcome();
+            launchSelectValue();
+            printField();
+        } else {
+            updateField(0, 0, -1);
+        }
+        reset();
         while (!this.end()) {
             welcomeBet();
             launchPlayerBet();
         }
         checkWin();
-        tryAgain();
+        launchGetAnswerTryAgain(3);
     }
 
     public void checkWin() {
@@ -387,7 +400,7 @@ public class Game {
         }
     }
 
-    public void launchPlayerBet() throws GameException {
+    public void launchPlayerBet() {
         try {
             String coordinatesInput = getInput();
             String[] coordinates = coordinatesInput.split(" ");
@@ -409,7 +422,35 @@ public class Game {
         printMessage("Make a bet, type x y point (for example, 1 1):");
     }
 
-    public void tryAgain(){
+    public int getAnswer() throws GameException {
         printMessage("Would you like to play again? (yes/no)");
+        String answer;
+        try {
+            answer = getInput();
+        } catch (Exception e) {
+            throw new GameException(e.getMessage());
+        }
+        if (!(answer.equals("yes") || answer.equals("no"))) {
+            throw new GameException(String.format("Wrong answer: %s. Please type yes or no.", answer));
+        }
+        return answer.equals("yes") ? 1 : 0;
+    }
+
+    public void launchGetAnswerTryAgain(int counter) {
+        counter--;
+        try {
+            if (counter < 0) {
+                return;
+            }
+            int answer = getAnswer();
+            if (answer == 1){
+                start();
+            } else {
+                System.exit(0);
+            }
+        } catch (Exception e) {
+            printMessage(e.getMessage());
+            launchGetAnswerTryAgain(counter);
+        }
     }
 }

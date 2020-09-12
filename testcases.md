@@ -59,3 +59,9 @@ Show game over message after exhausted all available fields
 Show welcome message for new game after game over
 
 Start new game if user confirm new game after game over
+
+Computer bets first if player bet first in previous game
+
+If player will win in next bet by bet last field in row bet to this field
+
+If player will win in next bet by bet last field in diagonal bet to this field

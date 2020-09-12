@@ -199,7 +199,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_MustPrintName() throws GameException {
+    public void WhenGame_MustPrintName() {
         Game game = new Game();
 
         game.init();
@@ -208,7 +208,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_MustPrintWelcomeMessage() throws GameException {
+    public void WhenGame_MustPrintWelcomeMessage() {
         Game game = new Game();
 
         game.welcome();
@@ -258,7 +258,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_ShowFieldWithCoordinates() throws GameException {
+    public void WhenGame_ShowFieldWithCoordinates() {
         Game game = new Game();
 
         game.init();
@@ -309,7 +309,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenPlayer_InputsBet_GameMakesBet() throws GameException {
+    public void WhenPlayer_InputsBet_GameMakesBet() {
         Game game = new Game();
 
         String input = "1" + "\n1 1";
@@ -334,7 +334,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenPlayer_InputsWrongBet_PrintErrorAndAskAgain() throws GameException {
+    public void WhenPlayer_InputsWrongBet_PrintErrorAndAskAgain() {
         Game game = new Game();
 
         String input = "1" + "\nabc" + "\n1 1";
@@ -363,7 +363,7 @@ public class GameTest {
     }
 
     @Test
-    public void WhenGame_IsOverAndPlayerIsWinShowMessage() throws GameException {
+    public void WhenGame_IsOverAndPlayerIsWinShowMessage() {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
@@ -373,11 +373,11 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("You win!",  messageHistory.get(messageHistory.size()-2));
+        assertEquals("You win!",  messageHistory.get(16));
     }
 
     @Test
-    public void WhenGame_IsOverAndPlayerIsLoseShowMessage() throws GameException {
+    public void WhenGame_IsOverAndPlayerIsLoseShowMessage() {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
@@ -387,11 +387,11 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("You lose :(", messageHistory.get(messageHistory.size()-2));
+        assertEquals("You lose :(", messageHistory.get(16));
     }
 
     @Test
-    public void WhenGame_WelcomeUserBet_ShowMessage() throws GameException {
+    public void WhenGame_WelcomeUserBet_ShowMessage() {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
@@ -402,15 +402,15 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-6));
+                messageHistory.get(4));
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-10));
+                messageHistory.get(8));
         assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(messageHistory.size()-14));
+                messageHistory.get(12));
     }
 
     @Test
-    public void WhenGame_MakesComputerBet_ShowMessage() throws GameException {
+    public void WhenGame_MakesComputerBet_ShowMessage() {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
@@ -420,11 +420,11 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Computer bets: 2 0", messageHistory.get(messageHistory.size()-4));
+        assertEquals("Computer bets: 2 0", messageHistory.get(14));
     }
 
     @Test
-    public void WhenGame_AllFieldExhausted_ShowMessage() throws GameException {
+    public void WhenGame_AllFieldExhausted_ShowMessage() {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2";
@@ -434,11 +434,11 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Game over. It is a draw",  messageHistory.get(messageHistory.size()-2));
+        assertEquals("Game over. It is a draw",  messageHistory.get(20));
     }
 
     @Test
-    public void WhenGame_IsOver_AskForNewGame() throws GameException {
+    public void WhenGame_IsOver_AskForNewGame() {
         Game game = new Game();
 
         String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2";
@@ -447,19 +447,53 @@ public class GameTest {
 
         game.start();
 
-        assertEquals("Would you like to play again? (yes/no)", game.lastMessage());
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Would you like to play again? (yes/no)", messageHistory.get(21));
     }
 
     @Test
-    public void WhenPlayer_ConfirmNewGameAfterGameOver_StartGame() throws GameException {
+    public void WhenPlayer_ConfirmNewGameAfterGameOver_StartGame() {
         Game game = new Game();
 
-        String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2" + "\nyes" + "\n1";
+        String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2" + "\nyes" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
         game.start();
 
-        assertEquals("Welcome to game!", game.lastMessage());
+        String currentFieldMap =
+                "y\n" +
+                "2 _|_|_\n" +
+                "1 _|_|_\n" +
+                "0 _|_|_\n" +
+                "  0|1|2 x\n";
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Would you like to play again? (yes/no)", messageHistory.get(21));
+        assertEquals(currentFieldMap, messageHistory.get(22));
+        assertEquals("Make a bet, type x y point (for example, 1 1):",
+                messageHistory.get(23));
+    }
+
+    @Test
+    public void WhenComputer_BetsFirst_IfPlayerBetFirstInPreviousGame() {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2" + "\nyes" + "\n1 1" + "\n0 1" + "\n2 0" + "\n1 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        String currentFieldMap =
+                "y\n" +
+                "2 _|_|_\n" +
+                "1 _|_|_\n" +
+                "0 0|_|_\n" +
+                "  0|1|2 x\n";
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("Computer bets: 0 0", messageHistory.get(23));
+        assertEquals(currentFieldMap, messageHistory.get(24));
     }
 }
