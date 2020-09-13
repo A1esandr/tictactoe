@@ -88,6 +88,7 @@ public class GameTest {
         Player player = new Player();
 
         game.init();
+        game.reset();
         player.bet(game, 0, 0, 0);
 
         assertEquals(2, game.usedFieldsSize());
@@ -132,6 +133,7 @@ public class GameTest {
         Player player = new Player();
 
         game.init();
+        game.reset();
         player.bet(game, 0, 0, 0);
         player.bet(game, 0, 1, 0);
         player.bet(game, 0, 2, 0);
@@ -145,6 +147,7 @@ public class GameTest {
         Player player = new Player();
 
         game.init();
+        game.reset();
         player.bet(game, 0, 0, 0);
         player.bet(game, 1, 1, 0);
         player.bet(game, 2, 2, 0);
@@ -172,6 +175,7 @@ public class GameTest {
         Player player = new Player();
 
         game.init();
+        game.reset();
         player.bet(game, 1, 1, 0);
         player.bet(game, 1, 0, 0);
         player.bet(game, 2, 1, 0);
@@ -186,6 +190,7 @@ public class GameTest {
         Player player = new Player();
 
         game.init();
+        game.reset();
         player.bet(game, 1, 1, 0);
 
         String currentFieldMap =
@@ -342,6 +347,7 @@ public class GameTest {
         System.setIn(in);
 
         game.init();
+        game.reset();
         game.welcome();
         game.launchSelectValue();
         game.printField();
@@ -471,8 +477,8 @@ public class GameTest {
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("Would you like to play again? (yes/no)", messageHistory.get(21));
         assertEquals(currentFieldMap, messageHistory.get(22));
-        assertEquals("Make a bet, type x y point (for example, 1 1):",
-                messageHistory.get(23));
+        assertEquals("Computer bets: 0 0", messageHistory.get(23));
+        assertEquals("Make a bet, type x y point (for example, 1 1):", messageHistory.get(25));
     }
 
     @Test
@@ -495,5 +501,19 @@ public class GameTest {
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("Computer bets: 0 0", messageHistory.get(23));
         assertEquals(currentFieldMap, messageHistory.get(24));
+    }
+
+    @Test(expected = GameException.class)
+    public void WhenPlayer_WillWinInNextBetByBetLastFieldInRow_ComputerBetToThisRow() {
+        Game game = new Game();
+
+        String input = "1" + "\n0 1" + "\n1 1" + "\n2 1" + "\n0 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("This field is not empty!", messageHistory.get(13));
     }
 }
