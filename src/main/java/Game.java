@@ -9,6 +9,7 @@ public class Game {
     boolean gameOver = false;
     boolean playerWin = false;
     boolean computerWin = false;
+    boolean firstPlay = false;
     String lastMessage = "";
     List<String> messageHistory = new ArrayList<>();
     private String fieldView =
@@ -51,6 +52,7 @@ public class Game {
         gameOver = false;
         playerWin = false;
         computerWin = false;
+        firstPlay = !firstPlay;
     }
 
     public void start() {
@@ -64,7 +66,6 @@ public class Game {
         }
         reset();
         while (!this.end()) {
-            welcomeBet();
             launchPlayerBet();
         }
         checkWin();
@@ -127,7 +128,8 @@ public class Game {
         }
     }
 
-    public void bet(int x, int y, int value) throws GameException {
+    private void playerBet(int x, int y, int value) throws GameException {
+        welcomeBet();
         if (userChoice != -1 && userChoice != value) {
             throw new GameException(String.format("You can`t bet different type of value. Your previous choice is %d", userChoice));
         }
@@ -136,7 +138,16 @@ public class Game {
             throw new GameException("This field is not empty!");
         }
         updateField(x, y, value);
-        computerBet();
+    }
+
+    public void bet(int x, int y, int value) throws GameException {
+        if (firstPlay) {
+            playerBet(x, y, value);
+            computerBet();
+        } else {
+            computerBet();
+            playerBet(x, y, value);
+        }
     }
 
     public boolean end() {
@@ -409,7 +420,6 @@ public class Game {
             player.bet(this, x, y);
         } catch (Exception e) {
             printMessage(e.getMessage());
-            welcomeBet();
             launchPlayerBet();
         }
     }
