@@ -64,4 +64,6 @@ Computer bets first if player bet first in previous game
 
 If player will win in next bet by bet last field in row bet to this field
 
+If player will win in next bet by bet last field in column bet to this field
+
 If player will win in next bet by bet last field in diagonal bet to this field
