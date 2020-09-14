@@ -9,6 +9,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GameTest {
+    private class GameStub extends Game {
+        @Override
+        public void bet(int x, int y, int value) throws GameException {
+            super.playerBet(x, y, value);
+        }
+    }
+
     @Test
     public void WhenGameStarts_EmptyField() {
         Game game = new Game();
@@ -116,7 +123,7 @@ public class GameTest {
 
     @Test
     public void WhenThreeHorizontallyFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
-        Game game = new Game();
+        Game game = new GameStub();
         Player player = new Player();
 
         game.init();
@@ -386,21 +393,21 @@ public class GameTest {
     public void WhenGame_IsOverAndPlayerIsLoseShowMessage() {
         Game game = new Game();
 
-        String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
+        String input = "1" + "\n1 0" + "\n0 1" + "\n2 2" + "\n2 1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("You lose :(", messageHistory.get(16));
+        assertEquals("You lose :(", messageHistory.get(20));
     }
 
     @Test
     public void WhenGame_WelcomeUserBet_ShowMessage() {
         Game game = new Game();
 
-        String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
+        String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -419,14 +426,14 @@ public class GameTest {
     public void WhenGame_MakesComputerBet_ShowMessage() {
         Game game = new Game();
 
-        String input = "1" + "\n1 1" + "\n0 2" + "\n2 2";
+        String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Computer bets: 2 0", messageHistory.get(14));
+        assertEquals("Computer bets: 0 1", messageHistory.get(14));
     }
 
     @Test
@@ -503,11 +510,11 @@ public class GameTest {
         assertEquals(currentFieldMap, messageHistory.get(24));
     }
 
-    @Test(expected = GameException.class)
+    @Test
     public void WhenPlayer_WillWinInNextBetByBetLastFieldInRow_ComputerBetToThisRow() {
         Game game = new Game();
 
-        String input = "1" + "\n0 1" + "\n1 1" + "\n2 1" + "\n0 2";
+        String input = "1" + "\n0 1" + "\n1 1" + "\n2 1" + "\n1 2" + "\n2 2";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -515,5 +522,19 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("This field is not empty!", messageHistory.get(13));
+    }
+
+    @Test
+    public void WhenPlayer_WillWinInNextBetByBetLastFieldInColumn_ComputerBetToThisColumn() {
+        Game game = new Game();
+
+        String input = "1" + "\n0 0" + "\n0 1" + "\n0 2" + "\n1 1" + "\n2 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("This field is not empty!", messageHistory.get(12));
     }
 }

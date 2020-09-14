@@ -113,12 +113,16 @@ public class Game {
             computerChoice = 0;
         }
         boolean found = false;
+        Point point = checkPlayerWinRow();
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
         for (int i = 0; i < FIELD_SIZE; i++) {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 if (field[i][j] == -1) {
                     found = true;
-                    printMessage(String.format("Computer bets: %d %d", j, i));
-                    updateField(j, i, computerChoice);
+                    makeBetByComputer(j, i);
                     break;
                 }
             }
@@ -128,7 +132,43 @@ public class Game {
         }
     }
 
-    private void playerBet(int x, int y, int value) throws GameException {
+    private void makeBetByComputer(int x, int y) {
+        printMessage(String.format("Computer bets: %d %d", x, y));
+        updateField(x, y, computerChoice);
+    }
+
+    private Point checkPlayerWinRow() {
+        Point point = null;
+        boolean found = false;
+        int foundX = 0;
+        int foundY = 0;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            found = false;
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                if (field[i][j] == computerChoice) {
+                    found = false;
+                    break;
+                }
+                if (field[i][j] == -1) {
+                    if(!found) {
+                        found = true;
+                        foundX = j;
+                        foundY = i;
+                    } else {
+                        found = false;
+                        break;
+                    }
+                }
+            }
+            if (found) {
+                point = new Point(foundX, foundY);
+                break;
+            }
+        }
+        return point;
+    }
+
+    protected void playerBet(int x, int y, int value) throws GameException {
         welcomeBet();
         if (userChoice != -1 && userChoice != value) {
             throw new GameException(String.format("You can`t bet different type of value. Your previous choice is %d", userChoice));
@@ -140,7 +180,7 @@ public class Game {
         updateField(x, y, value);
     }
 
-    public void bet(int x, int y, int value) throws GameException {
+    protected void bet(int x, int y, int value) throws GameException {
         if (firstPlay) {
             playerBet(x, y, value);
             computerBet();
