@@ -69,3 +69,5 @@ If player will win in next bet by bet last field in column bet to this field
 If player will win in next bet by bet last field in diagonal bet to this field
 
 If player win computer cannot bet until new game start
+
+Computer bet x=1, y=1 if player will not win in next bet
