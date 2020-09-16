@@ -141,9 +141,10 @@ public class GameTest {
 
         game.init();
         game.reset();
-        player.bet(game, 0, 0, 0);
+        player.bet(game, 1, 0, 0);
         player.bet(game, 0, 1, 0);
-        player.bet(game, 0, 2, 0);
+        player.bet(game, 1, 1, 0);
+        player.bet(game, 1, 2, 0);
 
         assertTrue(game.end());
     }
@@ -535,6 +536,20 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("This field is not empty!", messageHistory.get(12));
+        assertEquals("This field is not empty!", messageHistory.get(13));
+    }
+
+    @Test
+    public void WhenPlayer_WillWinInNextBetByBetLastFieldInDiagonal_ComputerBetToThisDiagonal() {
+        Game game = new Game();
+
+        String input = "1" + "\n0 0" + "\n1 1" + "\n2 2" + "\n1 2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("This field is not empty!", messageHistory.get(13));
     }
 }

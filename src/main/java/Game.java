@@ -118,6 +118,11 @@ public class Game {
             makeBetByComputer(point.getX(), point.getY());
             return;
         }
+        point = checkPlayerWinColumn();
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
         for (int i = 0; i < FIELD_SIZE; i++) {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 if (field[i][j] == -1) {
@@ -154,6 +159,37 @@ public class Game {
                         found = true;
                         foundX = j;
                         foundY = i;
+                    } else {
+                        found = false;
+                        break;
+                    }
+                }
+            }
+            if (found) {
+                point = new Point(foundX, foundY);
+                break;
+            }
+        }
+        return point;
+    }
+
+    private Point checkPlayerWinColumn() {
+        Point point = null;
+        boolean found = false;
+        int foundX = 0;
+        int foundY = 0;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            found = false;
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                if (field[j][i] == computerChoice) {
+                    found = false;
+                    break;
+                }
+                if (field[j][i] == -1) {
+                    if(!found) {
+                        found = true;
+                        foundX = i;
+                        foundY = j;
                     } else {
                         found = false;
                         break;
