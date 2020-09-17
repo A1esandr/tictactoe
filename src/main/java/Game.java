@@ -113,17 +113,32 @@ public class Game {
             computerChoice = 0;
         }
         boolean found = false;
-        Point point = checkPlayerWinRow();
+        Point point = checkPlayerWinRow(userChoice);
         if (point != null) {
             makeBetByComputer(point.getX(), point.getY());
             return;
         }
-        point = checkPlayerWinColumn();
+        point = checkPlayerWinColumn(userChoice);
         if (point != null) {
             makeBetByComputer(point.getX(), point.getY());
             return;
         }
-        point = checkPlayerWinDiagonal();
+        point = checkPlayerWinDiagonal(userChoice);
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
+        point = checkPlayerWinRow(computerChoice);
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
+        point = checkPlayerWinColumn(computerChoice);
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
+        point = checkPlayerWinDiagonal(computerChoice);
         if (point != null) {
             makeBetByComputer(point.getX(), point.getY());
             return;
@@ -147,7 +162,7 @@ public class Game {
         updateField(x, y, computerChoice);
     }
 
-    private Point checkPlayerWinRow() {
+    private Point checkPlayerWinRow(int oppositionChoice) {
         Point point = null;
         boolean found = false;
         int foundX = 0;
@@ -155,7 +170,7 @@ public class Game {
         for (int i = 0; i < FIELD_SIZE; i++) {
             found = false;
             for (int j = 0; j < FIELD_SIZE; j++) {
-                if (field[i][j] == computerChoice) {
+                if (field[i][j] == oppositionChoice) {
                     found = false;
                     break;
                 }
@@ -178,7 +193,7 @@ public class Game {
         return point;
     }
 
-    private Point checkPlayerWinColumn() {
+    private Point checkPlayerWinColumn(int oppositionChoice) {
         Point point = null;
         boolean found = false;
         int foundX = 0;
@@ -186,7 +201,7 @@ public class Game {
         for (int i = 0; i < FIELD_SIZE; i++) {
             found = false;
             for (int j = 0; j < FIELD_SIZE; j++) {
-                if (field[j][i] == computerChoice) {
+                if (field[j][i] == oppositionChoice) {
                     found = false;
                     break;
                 }
@@ -209,13 +224,13 @@ public class Game {
         return point;
     }
 
-    private Point checkPlayerWinDiagonal() {
+    private Point checkPlayerWinDiagonal(int oppositionChoice) {
         boolean found = false;
         int foundX = 0;
         int foundY = 0;
         for (int i = 0; i < FIELD_SIZE; i++) {
             int j = i;
-            if (field[j][i] == computerChoice) {
+            if (field[j][i] == oppositionChoice) {
                 found = false;
                 break;
             }

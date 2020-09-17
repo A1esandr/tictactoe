@@ -189,7 +189,7 @@ public class GameTest {
 
     @Test
     public void WhenThreeRightDiagonalFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
-        Game game = new Game();
+        Game game = new GameSimpleAIStub();
         Player player = new Player();
 
         game.init();
