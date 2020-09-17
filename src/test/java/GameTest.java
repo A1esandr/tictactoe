@@ -16,6 +16,30 @@ public class GameTest {
         }
     }
 
+    private class GameSimpleAIStub extends Game {
+        @Override
+        public void computerBet() {
+            if (userChoice == 0) {
+                computerChoice = 1;
+            } else {
+                computerChoice = 0;
+            }
+            boolean found = false;
+            for (int i = 0; i < getFieldSize(); i++) {
+                for (int j = 0; j < getFieldSize(); j++) {
+                    if (field[i][j] == -1) {
+                        found = true;
+                        makeBetByComputer(j, i);
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+
     @Test
     public void WhenGameStarts_EmptyField() {
         Game game = new Game();
@@ -151,7 +175,7 @@ public class GameTest {
 
     @Test
     public void WhenThreeLeftDiagonalFieldsHaveTheSameNonEmptyValues_GameEnds() throws GameException {
-        Game game = new Game();
+        Game game = new GameSimpleAIStub();
         Player player = new Player();
 
         game.init();
@@ -378,7 +402,7 @@ public class GameTest {
 
     @Test
     public void WhenGame_IsOverAndPlayerIsWinShowMessage() {
-        Game game = new Game();
+        Game game = new GameSimpleAIStub();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -406,7 +430,7 @@ public class GameTest {
 
     @Test
     public void WhenGame_WelcomeUserBet_ShowMessage() {
-        Game game = new Game();
+        Game game = new GameSimpleAIStub();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -425,7 +449,7 @@ public class GameTest {
 
     @Test
     public void WhenGame_MakesComputerBet_ShowMessage() {
-        Game game = new Game();
+        Game game = new GameSimpleAIStub();
 
         String input = "1" + "\n1 1" + "\n0 2" + "\n2 0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -551,5 +575,19 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("This field is not empty!", messageHistory.get(13));
+    }
+
+    @Test
+    public void WhenComputer_WillWinInNextBet_ComputerBetToWinningField() {
+        Game game = new Game();
+
+        String input = "1" + "\n0 0" + "\n2 2" + "\n2 0" + "\n0 1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("You lose :(", messageHistory.get(16));
     }
 }

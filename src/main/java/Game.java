@@ -142,7 +142,7 @@ public class Game {
         }
     }
 
-    private void makeBetByComputer(int x, int y) {
+    protected void makeBetByComputer(int x, int y) {
         printMessage(String.format("Computer bets: %d %d", x, y));
         updateField(x, y, computerChoice);
     }
