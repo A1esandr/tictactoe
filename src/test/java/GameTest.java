@@ -543,7 +543,7 @@ public class GameTest {
     public void WhenPlayer_WillWinInNextBetByBetLastFieldInDiagonal_ComputerBetToThisDiagonal() {
         Game game = new Game();
 
-        String input = "1" + "\n0 0" + "\n1 1" + "\n2 2" + "\n1 2";
+        String input = "1" + "\n0 0" + "\n1 1" + "\n2 2" + "\n1 2" + "\n0 1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

@@ -123,6 +123,11 @@ public class Game {
             makeBetByComputer(point.getX(), point.getY());
             return;
         }
+        point = checkPlayerWinDiagonal();
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
         for (int i = 0; i < FIELD_SIZE; i++) {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 if (field[i][j] == -1) {
@@ -202,6 +207,54 @@ public class Game {
             }
         }
         return point;
+    }
+
+    private Point checkPlayerWinDiagonal() {
+        boolean found = false;
+        int foundX = 0;
+        int foundY = 0;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            int j = i;
+            if (field[j][i] == computerChoice) {
+                found = false;
+                break;
+            }
+            if (field[j][i] == -1) {
+                if(!found) {
+                    found = true;
+                    foundX = i;
+                    foundY = j;
+                } else {
+                    found = false;
+                    break;
+                }
+            }
+        }
+        if (found) {
+            return new Point(foundX, foundY);
+        }
+        found = false;
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            int j = FIELD_SIZE - 1 - i;
+            if (field[j][i] == computerChoice) {
+                found = false;
+                break;
+            }
+            if (field[j][i] == -1) {
+                if(!found) {
+                    found = true;
+                    foundX = i;
+                    foundY = j;
+                } else {
+                    found = false;
+                    break;
+                }
+            }
+        }
+        if (found) {
+            return new Point(foundX, foundY);
+        }
+        return null;
     }
 
     protected void playerBet(int x, int y, int value) throws GameException {
