@@ -1,6 +1,11 @@
 ### Tic tak toe
 Tic tak toe game with cli by TDD
 
+##### Used
+* Java 11
+* Maven 3
+
+##### Example
 ```
 Tic tac toe
 Welcome to game!
