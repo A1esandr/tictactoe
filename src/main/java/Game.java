@@ -287,9 +287,15 @@ public class Game {
     protected void bet(int x, int y, int value) throws GameException {
         if (firstPlay) {
             playerBet(x, y, value);
+            if (this.end()) {
+                return;
+            }
             computerBet();
         } else {
             computerBet();
+            if (this.end()) {
+                return;
+            }
             playerBet(x, y, value);
         }
     }
@@ -426,73 +432,88 @@ public class Game {
     }
 
     private boolean checkExhaustingAllFields() {
-        boolean verticalFieldExhausted = false;
-        boolean horizontalFieldExhausted = false;
-        boolean diagonalLeftExhausted = false;
-        boolean diagonalRightExhausted = false;
-        boolean foundZero;
-        boolean foundOne;
+        int empty = 0;
         for (int i = 0; i < FIELD_SIZE; i++) {
-            foundZero = false;
-            foundOne = false;
             for (int j = 0; j < FIELD_SIZE; j++) {
-                if (field[i][j] == 0) {
-                    foundZero = true;
-                }
-                if (field[i][j] == 1) {
-                    foundOne = true;
+                if (field[i][j] == -1) {
+                    empty++;
                 }
             }
-            if (foundZero && foundOne) {
-                horizontalFieldExhausted = true;
-            } else {
-                horizontalFieldExhausted = false;
-            }
         }
-        for (int i = 0; i < FIELD_SIZE; i++) {
-            foundZero = false;
-            foundOne = false;
-            for (int j = 0; j < FIELD_SIZE; j++) {
-                if (field[j][i] == 0) {
-                    foundZero = true;
-                }
-                if (field[j][i] == 1) {
-                    foundOne = true;
-                }
-            }
-            if (foundZero && foundOne) {
-                verticalFieldExhausted = true;
-            } else {
-                verticalFieldExhausted = false;
-            }
+        if(empty > 1) {
+            return false;
         }
-        foundZero = false;
-        foundOne = false;
-        for (int i = 0; i < FIELD_SIZE; i++) {
-            if (field[i][i] == 0) {
-                foundZero = true;
-            }
-            if (field[i][i] == 1) {
-                foundOne = true;
-            }
-            if (foundZero && foundOne) {
-                diagonalLeftExhausted = true;
-            }
-        }
-        foundZero = false;
-        foundOne = false;
-        for (int i = 0; i < FIELD_SIZE; i++) {
-            if (field[FIELD_SIZE - i - 1][i] == 0) {
-                foundZero = true;
-            }
-            if (field[FIELD_SIZE - i - 1][i] == 1) {
-                foundOne = true;
-            }
-            if (foundZero && foundOne) {
-                diagonalRightExhausted = true;
-            }
-        }
-        return horizontalFieldExhausted && verticalFieldExhausted && diagonalLeftExhausted && diagonalRightExhausted;
+        return true;
+
+
+
+//        boolean verticalFieldExhausted = false;
+//        boolean horizontalFieldExhausted = false;
+//        boolean diagonalLeftExhausted = false;
+//        boolean diagonalRightExhausted = false;
+//        boolean foundZero;
+//        boolean foundOne;
+//        for (int i = 0; i < FIELD_SIZE; i++) {
+//            foundZero = false;
+//            foundOne = false;
+//            for (int j = 0; j < FIELD_SIZE; j++) {
+//                if (field[i][j] == 0) {
+//                    foundZero = true;
+//                }
+//                if (field[i][j] == 1) {
+//                    foundOne = true;
+//                }
+//            }
+//            if (foundZero && foundOne) {
+//                horizontalFieldExhausted = true;
+//            } else {
+//                horizontalFieldExhausted = false;
+//            }
+//        }
+//        for (int i = 0; i < FIELD_SIZE; i++) {
+//            foundZero = false;
+//            foundOne = false;
+//            for (int j = 0; j < FIELD_SIZE; j++) {
+//                if (field[j][i] == 0) {
+//                    foundZero = true;
+//                }
+//                if (field[j][i] == 1) {
+//                    foundOne = true;
+//                }
+//            }
+//            if (foundZero && foundOne) {
+//                verticalFieldExhausted = true;
+//            } else {
+//                verticalFieldExhausted = false;
+//            }
+//        }
+//        foundZero = false;
+//        foundOne = false;
+//        for (int i = 0; i < FIELD_SIZE; i++) {
+//            if (field[i][i] == 0) {
+//                foundZero = true;
+//            }
+//            if (field[i][i] == 1) {
+//                foundOne = true;
+//            }
+//            if (foundZero && foundOne) {
+//                diagonalLeftExhausted = true;
+//            }
+//        }
+//        foundZero = false;
+//        foundOne = false;
+//        for (int i = 0; i < FIELD_SIZE; i++) {
+//            if (field[FIELD_SIZE - i - 1][i] == 0) {
+//                foundZero = true;
+//            }
+//            if (field[FIELD_SIZE - i - 1][i] == 1) {
+//                foundOne = true;
+//            }
+//            if (foundZero && foundOne) {
+//                diagonalRightExhausted = true;
+//            }
+//        }
+//        return horizontalFieldExhausted && verticalFieldExhausted && diagonalLeftExhausted && diagonalRightExhausted;
     }
 
     private void updateField(int x, int y, int value){

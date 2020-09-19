@@ -411,7 +411,7 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("You win!",  messageHistory.get(16));
+        assertEquals("You win!",  messageHistory.get(14));
     }
 
     @Test
@@ -458,7 +458,7 @@ public class GameTest {
         game.start();
 
         List<String> messageHistory = game.getMessageHistory();
-        assertEquals("Computer bets: 0 1", messageHistory.get(14));
+        assertEquals("Computer bets: 0 0", messageHistory.get(6));
     }
 
     @Test
@@ -589,5 +589,19 @@ public class GameTest {
 
         List<String> messageHistory = game.getMessageHistory();
         assertEquals("You lose :(", messageHistory.get(16));
+    }
+
+    @Test
+    public void WhenGame_EndsByPlayerWin_ComputerCanNotBetUntilNewGame() {
+        Game game = new Game();
+
+        String input = "1" + "\n1 1" + "\n2 2" + "\n2 0" + "\n2 1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        game.start();
+
+        List<String> messageHistory = game.getMessageHistory();
+        assertEquals("You win!", messageHistory.get(18));
     }
 }
