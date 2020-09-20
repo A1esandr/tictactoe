@@ -9,6 +9,7 @@ public class Game {
     boolean gameOver = false;
     boolean playerWin = false;
     boolean computerWin = false;
+    boolean computerBetLast = false;
     boolean firstPlay = false;
     String lastMessage = "";
     List<String> messageHistory = new ArrayList<>();
@@ -53,6 +54,7 @@ public class Game {
         playerWin = false;
         computerWin = false;
         firstPlay = !firstPlay;
+        computerBetLast = false;
     }
 
     public void start() {
@@ -143,6 +145,11 @@ public class Game {
             makeBetByComputer(point.getX(), point.getY());
             return;
         }
+        point = checkCentreField();
+        if (point != null) {
+            makeBetByComputer(point.getX(), point.getY());
+            return;
+        }
         for (int i = 0; i < FIELD_SIZE; i++) {
             for (int j = 0; j < FIELD_SIZE; j++) {
                 if (field[i][j] == -1) {
@@ -160,6 +167,13 @@ public class Game {
     protected void makeBetByComputer(int x, int y) {
         printMessage(String.format("Computer bets: %d %d", x, y));
         updateField(x, y, computerChoice);
+    }
+
+    private Point checkCentreField() {
+        if (field[1][1] == -1) {
+            return new Point(1, 1);
+        }
+        return null;
     }
 
     private Point checkPlayerWinRow(int oppositionChoice) {
@@ -292,11 +306,15 @@ public class Game {
             }
             computerBet();
         } else {
-            computerBet();
+            if(!computerBetLast) {
+                computerBet();
+                computerBetLast = true;
+            }
             if (this.end()) {
                 return;
             }
             playerBet(x, y, value);
+            computerBetLast = false;
         }
     }
 
